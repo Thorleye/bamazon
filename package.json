@@ -1,0 +1,31 @@
+{
+  "name": "bamazon",
+  "version": "1.0.0",
+  "description": "A MySQL and Node based amazon-like storefront and inventory management program",
+  "main": "bamazonCustomer.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Thorleye/bamazon.git"
+  },
+  "keywords": [
+    "MySQL",
+    "node",
+    "storefront",
+    "CLI",
+    "inventory-management"
+  ],
+  "author": "Eric Thorley",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Thorleye/bamazon/issues"
+  },
+  "homepage": "https://github.com/Thorleye/bamazon#readme",
+  "dependencies": {
+    "inquirer": "^6.1.0",
+    "mysql": "^2.16.0",
+    "require": "^2.4.20"
+  }
+}
