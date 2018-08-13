@@ -13,7 +13,7 @@ var connection = mysql.createConnection(
 
 connection.connect(function(err, res){
     if (err) throw err;
-    console.log('Welcome!')
+    console.log('\n Welcome!')
     }
 )
 
@@ -25,14 +25,13 @@ function displayEverything(){
         console.log(
             "Item ID: " + res[i].item_id + " | ",
             "Product: " + res[i].product_name + " | ",
-//            "Department: " + res[i].department_name + " | ",
+//          "Department: " + res[i].department_name + " | ",
             "Price: " + res[i].price + " | ",
-           "Stock: " + res[i].stock_quantity + " | ",
+//           "Stock: " + res[i].stock_quantity + " | ",
             "\n-------------------------------------------------------------------------------------------------"
         )
-    })
     inquirerStart();
-   
+    });
 };
 
 function inquirerStart(){
