@@ -25,12 +25,57 @@ function displayEverything(){
         console.log(
             "Item ID: " + res[i].item_id + " | ",
             "Product: " + res[i].product_name + " | ",
-            "Department: " + res[i].department_name + " | ",
+//            "Department: " + res[i].department_name + " | ",
             "Price: " + res[i].price + " | ",
-            "Stock: " + res[i].stock_quantity + " | ",
+//            "Stock: " + res[i].stock_quantity + " | ",
             "\n-------------------------------------------------------------------------------------------------"
         )
     })
-    connection.end();
+   
 };
-displayEverything();
+
+function inquirerStart(){
+    inquirer
+    .prompt([
+        {
+            name: "idPrompt",
+            type: "input",
+            message: "What is the ID of the item you would like to buy?"
+        },
+        {
+            name: "quantityPrompt",
+            type: "input",
+            message:"How many would you like to buy?"
+        }
+    ])
+    .then(function(answers){
+        console.log("ID Prompt: " + answers.idPrompt ,"Quantity Prompt: " + answers.quantityPrompt);
+        connection.query(
+            "UPDATE products SET stock_quanity=? WHERE ?",
+            [
+              {
+                stock_quantity: stock_quantity - answers.quantityPrompt 
+              },
+              {
+                item_id: answers.idPrompt
+              }
+            ],
+            function(err, res) {
+              console.log(res.affectedRows);
+        })
+        connection.query("SELECT * FROM products WHERE item_id =?", [answers.idPrompt], function (err, res) {
+            if (err) throw err;
+            for (x in res){
+            console.log('The cost of your purchase is: ' + (answers.quantityPrompt) * (res[x].price));
+            }
+        });
+        startUp();
+    });
+}
+
+function startUp(){
+    displayEverything();
+    inquirerStart();
+}
+
+startUp();
