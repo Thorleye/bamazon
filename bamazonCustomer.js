@@ -31,6 +31,7 @@ function displayEverything(){
             "\n-------------------------------------------------------------------------------------------------"
         )
     })
+    inquirerStart();
    
 };
 
@@ -57,24 +58,20 @@ function inquirerStart(){
                 answers.idPrompt  
             ],
             function(err, res) {
-            if (err) throw err;;
-        })
+            if (err) throw err;
+        });
         connection.query("SELECT * FROM products WHERE item_id =?", [answers.idPrompt], function (err, res) {
             if (err) throw err;
            for (x in res){
             console.log('The cost of your purchase is: ' + (answers.quantityPrompt) * (res[x].price));
             console.log("Thank you for shopping! You're our favourite customer!" + "\n\n"+
             "-----------------------------------------------------------------------------------------------------");
-            startUp();
+            displayEverything();
             }
         });
         
     });
 }
 
-function startUp(){
-    inquirerStart();
-    displayEverything();
-}
+displayEverything();
 
-startUp();
