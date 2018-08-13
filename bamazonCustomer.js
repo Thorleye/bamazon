@@ -27,7 +27,7 @@ function displayEverything(){
             "Product: " + res[i].product_name + " | ",
 //            "Department: " + res[i].department_name + " | ",
             "Price: " + res[i].price + " | ",
-//            "Stock: " + res[i].stock_quantity + " | ",
+           "Stock: " + res[i].stock_quantity + " | ",
             "\n-------------------------------------------------------------------------------------------------"
         )
     })
@@ -51,31 +51,30 @@ function inquirerStart(){
     .then(function(answers){
         console.log("ID Prompt: " + answers.idPrompt ,"Quantity Prompt: " + answers.quantityPrompt);
         connection.query(
-            "UPDATE products SET stock_quanity=? WHERE ?",
-            [
-              {
-                stock_quantity: stock_quantity - answers.quantityPrompt 
-              },
-              {
-                item_id: answers.idPrompt
-              }
+            "UPDATE products SET stock_quantity = stock_quantity - ? WHERE item_id = ?",
+            [              
+                parseInt(answers.quantityPrompt), 
+                answers.idPrompt  
             ],
             function(err, res) {
-              console.log(res.affectedRows);
+            if (err) throw err;;
         })
         connection.query("SELECT * FROM products WHERE item_id =?", [answers.idPrompt], function (err, res) {
             if (err) throw err;
-            for (x in res){
+           for (x in res){
             console.log('The cost of your purchase is: ' + (answers.quantityPrompt) * (res[x].price));
+            console.log("Thank you for shopping! You're our favourite customer!" + "\n\n"+
+            "-----------------------------------------------------------------------------------------------------");
+            startUp();
             }
         });
-        startUp();
+        
     });
 }
 
 function startUp(){
-    displayEverything();
     inquirerStart();
+    displayEverything();
 }
 
 startUp();
