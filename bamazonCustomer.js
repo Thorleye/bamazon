@@ -13,7 +13,7 @@ var connection = mysql.createConnection(
 
 connection.connect(function(err, res){
     if (err) throw err;
-    console.log('\n Welcome!')
+    console.log('\n Welcome! \n')
     }
 )
 
@@ -23,12 +23,13 @@ function displayEverything(){
         if (err) throw err;
         for (i=0; i < res.length; i++)
         console.log(
+            "---------------------------------------------------------------------------------------------------\n",
             "Item ID: " + res[i].item_id + " | ",
             "Product: " + res[i].product_name + " | ",
 //          "Department: " + res[i].department_name + " | ",
-            "Price: " + res[i].price + " | ",
+            "Price: " + (res[i].price).toFixed(2) + " | ",
 //           "Stock: " + res[i].stock_quantity + " | ",
-            "\n-------------------------------------------------------------------------------------------------"
+            "\n---------------------------------------------------------------------------------------------------"
         )
     inquirerStart();
     });
@@ -53,7 +54,7 @@ function inquirerStart(){
         connection.query(
             "UPDATE products SET stock_quantity = stock_quantity - ? WHERE item_id = ?",
             [              
-                parseInt(answers.quantityPrompt), 
+                answers.quantityPrompt, 
                 answers.idPrompt  
             ],
             function(err, res) {
@@ -61,11 +62,11 @@ function inquirerStart(){
         });
         connection.query("SELECT * FROM products WHERE item_id =?", [answers.idPrompt], function (err, res) {
             if (err) throw err;
-           for (x in res){
-            console.log('The cost of your purchase is: ' + (answers.quantityPrompt) * (res[x].price));
+            for (x in res){
+            console.log("\nThe cost of your purchase is: " + ((answers.quantityPrompt) * (res[x].price)).toFixed(2) + "\n");
             console.log("Thank you for shopping! You're our favourite customer!" + "\n\n"+
-            "-----------------------------------------------------------------------------------------------------");
-            displayEverything();
+            "-----------------------------------------------------------------------------------------------------"+"\n\n");
+            setTimeout(displayEverything, 2000);
             }
         });
         
@@ -73,4 +74,3 @@ function inquirerStart(){
 }
 
 displayEverything();
-
