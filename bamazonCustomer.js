@@ -5,8 +5,8 @@ var connection = mysql.createConnection(
     {
         host: 'localhost',
         port: 3306,
-        user: 'root',
-        password: 'MysqlPackers17',
+        user: 'guestuser',
+        password: 'GuestSQL',
         database: 'bamazon'
     }
 )
@@ -35,18 +35,28 @@ function displayEverything(){
     });
 };
 
+var checkForNumber = function(input){
+    if (isNaN(input)=== true){
+       return "You must enter a number";
+   }
+   return true;
+};
+
 function inquirerStart(){
     inquirer
     .prompt([
         {
             name: "idPrompt",
             type: "input",
-            message: "What is the ID of the item you would like to buy?"
+            message: "What is the ID of the item you would like to buy?",
+            validate: checkForNumber
+            
         },
         {
             name: "quantityPrompt",
             type: "input",
-            message:"How many would you like to buy?"
+            message:"How many would you like to buy?",
+            validate: checkForNumber
         }
     ])
     .then(function(answers){
