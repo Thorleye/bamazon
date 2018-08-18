@@ -53,25 +53,37 @@ var viewLowInventory = function(){
 }
 
 var addToInventory = function(){
+    inquirer.prompt([
+        {
+            name: "id",
+            type: "input",
+            message: "What item ID would you like to update?",
+            validate: checkForNumber
+        },{
+            name: "amount",
+            type: "input",
+            message: "How many new items?",
+            validate: checkForNumber
+        }
+    ]).then(answers => 
     connection.query(
-        "UPDATE products SET stock_quantity = stock_quantity + ? WHERE product_id = ?", 
+        "UPDATE products SET stock_quantity = stock_quantity + ? WHERE item_id = ?", 
             [
-                answers.addStock,
-                answers.idPrompt
+                answers.amount,
+                answers.id,
             ], 
         function(err, res){
             if (err) throw err;
             console.log('Stock is Updated')
-        }
-    )
-    connection.query(
+    }))
+ /*   connection.query(
         "SELECT * from products WHERE product id =",[answers.idPrompt],function(err, res){
             for (x in res){
             console.log("Stock quanity for " + res[x].product_name + " is :"+ res[x].stock_quantity);
             }
         }
-    )
-}
+    )*/
+};
 
 var addNewItem = function(){
     connection.query(
@@ -83,14 +95,20 @@ var addNewItem = function(){
         } 
     )
 }
+var checkForNumber = function(input){
+    if (isNaN(input)=== true){
+       return "You must enter a number";
+   }
+   return true;
+};
 
 function managerStart(){
     inquirer
         .prompt([
             {
-            name: manager,
-            type: list,
-            Message: "What would you like to do?",
+            name: "manager",
+            type: "list",
+            message: "What would you like to do?",
             choices:[
                 "View Products for Sale",
                 "View Low Inventory",
@@ -100,12 +118,19 @@ function managerStart(){
             }
         ])
         .then(answers => {
-            switch(answers){
-                case choice === "View all inventory"
+            switch(answers.manager){
+                case "View Products for Sale":
+                displayEverything();
+                break
+
+                case "View Low Inventory":
                 viewLowInventory();
                 break
 
+                case "Add to Inventory":
+                addToInventory();
+                break
             }
-            
-          });
-}
+        })
+} 
+managerStart();
