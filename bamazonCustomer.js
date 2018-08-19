@@ -62,9 +62,11 @@ function inquirerStart(){
     .then(function(answers){
         connection.query("SELECT stock_quantity FROM products WHERE item_id = ?",[answers.idPrompt], function(err, res){
             if (err) throw err;
-            if (res.length === 0)
+            if (res.length === 0){
                 console.log("Please select valid Item ID");
-            
+                inquirerStart();
+                return
+            }
             let remainingStock = res[0].stock_quantity
             let demand = answers.quantityPrompt
             if ((remainingStock < demand)===true){
