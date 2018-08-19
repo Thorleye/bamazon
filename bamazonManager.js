@@ -75,14 +75,17 @@ var addToInventory = function(){
             function(err, res){
                 if (err) throw err;
                 console.log('Stock is Updated')
-        })
+        });
        connection.query(
-            "SELECT * from products WHERE product id =",[answers.id],function(err, res){
-                for (x in res){
-                console.log("Stock quanity for " + res[x].product_name + " is :"+ res[x].stock_quantity);
-                }
+            "SELECT * FROM products WHERE item_id = ?", [answers.id], 
+                function(err, res){
+                    for (x in res){
+                    console.log("Stock quantity for " + res[x].product_name + " is now:"+ res[x].stock_quantity);
+                    setTimeout(managerStart,3000);    
+            }
         })
     })
+    
 };
 
 var addNewItem = function(){
@@ -115,7 +118,23 @@ var addNewItem = function(){
                 if (err) throw err;
                 console.log('New Item Added')
             }) 
-    })
+        connection.query(
+            "SELECT * FROM products WHERE product_name =?",[answer.product],
+            function(err, res){
+            for (i in res){
+                console.log(
+                    "---------------------------------------------------------------------------------------------------\n",
+                    "Item ID: " + res[i].item_id + " | ",
+                    "Product: " + res[i].product_name + " | ",
+                    "Department: " + res[i].department_name + " | ",
+                    "Price: " + (res[i].price).toFixed(2) + " | ",
+                    "Stock: " + res[i].stock_quantity + " | ",
+                    "\n---------------------------------------------------------------------------------------------------"
+                )
+            } 
+            setTimeout(managerStart,2000)
+            })
+    })   
 };
 
 var checkForNumber = function(input){
@@ -144,10 +163,12 @@ function managerStart(){
             switch(answers.manager){
                 case "View Products for Sale":
                 displayEverything();
+                setTimeout(managerStart, 1000);
                 break
 
                 case "View Low Inventory":
                 viewLowInventory();
+                setTimeout(managerStart, 1000);
                 break
 
                 case "Add to Inventory":
