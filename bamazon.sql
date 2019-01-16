@@ -1,3 +1,5 @@
+drop table products;
+
 CREATE DATABASE bamazon;
 
 USE bamazon;
