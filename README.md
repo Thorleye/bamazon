@@ -6,4 +6,4 @@ The Inquirer web package is also used to create a command line interface for int
 *node bamazonCustomer* will bring up an inventory list from the SQL database and prompt the user for purchasing information. Following the instructions will allow the user to purchase items if there are enough in inventory, and calculate final costs. The items will be removed from the SQL database. 
 
 ##### Example
-[!customer gif](./images/customer.gif)
+![customer gif](./images/customer.gif)
